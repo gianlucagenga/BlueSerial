@@ -41,7 +41,6 @@ public class MainActivity extends Activity {
 	private static final String OFF_CODE = "b";
 
 	// All controls here
-	private Button mBtnDisconnect;
 	//private Button mBtnSend;
 	private ToggleButton mSwitchONOFF;
 
@@ -65,19 +64,10 @@ public class MainActivity extends Activity {
 
 		Log.d(TAG, "Ready");
 
-		mBtnDisconnect = (Button) findViewById(R.id.btnDisconnect);
 		//mBtnSend = (Button) findViewById(R.id.btnSend);
 		//mEditSend = (EditText) findViewById(R.id.editSend);
 		mSwitchONOFF = (ToggleButton) findViewById(R.id.switchONOFF);
 
-		mBtnDisconnect.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				mIsUserInitiatedDisconnect = true;
-				new DisConnectBT().execute();
-			}
-		});
 /*
 		mBtnSend.setOnClickListener(new OnClickListener() {
 
@@ -101,6 +91,12 @@ public class MainActivity extends Activity {
 				}
 			}
 		});
+	}
+
+	@Override
+	public void onBackPressed() {
+		mIsUserInitiatedDisconnect = true;
+		new DisConnectBT().execute();
 	}
 
 	private class ReadInput implements Runnable {
