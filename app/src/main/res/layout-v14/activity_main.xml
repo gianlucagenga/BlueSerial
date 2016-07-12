@@ -6,7 +6,8 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     tools:context=".MainActivity"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:measureWithLargestChild="true">
 
     <LinearLayout
         android:orientation="horizontal"

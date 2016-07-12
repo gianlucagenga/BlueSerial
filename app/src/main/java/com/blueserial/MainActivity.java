@@ -20,15 +20,11 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.widget.ToggleButton;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -41,16 +37,13 @@ public class MainActivity extends Activity {
 
 	private boolean mIsUserInitiatedDisconnect = false;
 
+	private static final String ON_CODE = "a";
+	private static final String OFF_CODE = "b";
+
 	// All controls here
-	private TextView mTxtReceive;
-	private EditText mEditSend;
 	private Button mBtnDisconnect;
-	private Button mBtnSend;
-	private Button mBtnClear;
-	private Button mBtnClearInput;
-	private ScrollView scrollView;
-	private CheckBox chkScroll;
-	private CheckBox chkReceiveText;
+	//private Button mBtnSend;
+	private ToggleButton mSwitchONOFF;
 
 	private boolean mIsBluetoothConnected = false;
 
@@ -73,16 +66,9 @@ public class MainActivity extends Activity {
 		Log.d(TAG, "Ready");
 
 		mBtnDisconnect = (Button) findViewById(R.id.btnDisconnect);
-		mBtnSend = (Button) findViewById(R.id.btnSend);
-		mBtnClear = (Button) findViewById(R.id.btnClear);
-		mTxtReceive = (TextView) findViewById(R.id.txtReceive);
-		mEditSend = (EditText) findViewById(R.id.editSend);
-		scrollView = (ScrollView) findViewById(R.id.viewScroll);
-		chkScroll = (CheckBox) findViewById(R.id.chkScroll);
-		chkReceiveText = (CheckBox) findViewById(R.id.chkReceiveText);
-		mBtnClearInput = (Button) findViewById(R.id.btnClearInput);
-
-		mTxtReceive.setMovementMethod(new ScrollingMovementMethod());
+		//mBtnSend = (Button) findViewById(R.id.btnSend);
+		//mEditSend = (EditText) findViewById(R.id.editSend);
+		mSwitchONOFF = (ToggleButton) findViewById(R.id.switchONOFF);
 
 		mBtnDisconnect.setOnClickListener(new OnClickListener() {
 
@@ -92,7 +78,7 @@ public class MainActivity extends Activity {
 				new DisConnectBT().execute();
 			}
 		});
-
+/*
 		mBtnSend.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -100,28 +86,21 @@ public class MainActivity extends Activity {
 				try {
 					mBTSocket.getOutputStream().write(mEditSend.getText().toString().getBytes());
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});*/
+
+		mSwitchONOFF.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				try {
+					mBTSocket.getOutputStream().write(mSwitchONOFF.isChecked() ? ON_CODE.getBytes() : OFF_CODE.getBytes());
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 		});
-
-		mBtnClear.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				mEditSend.setText("");
-			}
-		});
-		
-		mBtnClearInput.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				mTxtReceive.setText("");
-			}
-		});
-
 	}
 
 	private class ReadInput implements Runnable {
@@ -159,32 +138,6 @@ public class MainActivity extends Activity {
 						/*
 						 * If checked then receive text, better design would probably be to stop thread if unchecked and free resources, but this is a quick fix
 						 */
-
-						if (chkReceiveText.isChecked()) {
-							mTxtReceive.post(new Runnable() {
-								@Override
-								public void run() {
-									mTxtReceive.append(strInput);
-									//Uncomment below for testing
-									//mTxtReceive.append("\n");
-									//mTxtReceive.append("Chars: " + strInput.length() + " Lines: " + mTxtReceive.getLineCount() + "\n");
-									
-									int txtLength = mTxtReceive.getEditableText().length();  
-									if(txtLength > mMaxChars){
-										mTxtReceive.getEditableText().delete(0, txtLength - mMaxChars);
-									}
-
-									if (chkScroll.isChecked()) { // Scroll only if this is checked
-										scrollView.post(new Runnable() { // Snippet from http://stackoverflow.com/a/4612082/1287554
-													@Override
-													public void run() {
-														scrollView.fullScroll(View.FOCUS_DOWN);
-													}
-												});
-									}
-								}
-							});
-						}
 
 					}
 					Thread.sleep(500);
