@@ -39,10 +39,16 @@ public class MainActivity extends Activity {
 
 	private static final String ON_CODE = "a";
 	private static final String OFF_CODE = "b";
+	private static final String ON_NIGHT_CODE = "c";
+	private static final String OFF_NIGHT_CODE = "d";
+	private static final String ON_READ_CODE = "e";
+	private static final String OFF_READ_CODE = "f";
 
 	// All controls here
 	//private Button mBtnSend;
 	private ToggleButton mSwitchONOFF;
+	private ToggleButton mSwitchReadONOFF;
+	private ToggleButton mSwitchNightONOFF;
 
 	private boolean mIsBluetoothConnected = false;
 
@@ -67,6 +73,13 @@ public class MainActivity extends Activity {
 		//mBtnSend = (Button) findViewById(R.id.btnSend);
 		//mEditSend = (EditText) findViewById(R.id.editSend);
 		mSwitchONOFF = (ToggleButton) findViewById(R.id.switchONOFF);
+		mSwitchReadONOFF = (ToggleButton) findViewById(R.id.toggleRead);
+		mSwitchNightONOFF = (ToggleButton) findViewById(R.id.toggleNight);
+
+		mSwitchNightONOFF.setEnabled(false);
+		mSwitchReadONOFF.setEnabled(false);
+		mSwitchNightONOFF.setChecked(false);
+		mSwitchReadONOFF.setChecked(false);
 
 /*
 		mBtnSend.setOnClickListener(new OnClickListener() {
@@ -85,7 +98,52 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				try {
-					mBTSocket.getOutputStream().write(mSwitchONOFF.isChecked() ? ON_CODE.getBytes() : OFF_CODE.getBytes());
+					if (mSwitchONOFF.isChecked()) {
+						mBTSocket.getOutputStream().write(ON_CODE.getBytes());
+						mSwitchNightONOFF.setEnabled(true);
+						mSwitchReadONOFF.setEnabled(true);
+					}
+					else {
+						mBTSocket.getOutputStream().write(OFF_CODE.getBytes());
+						mSwitchNightONOFF.setEnabled(false);
+						mSwitchReadONOFF.setEnabled(false);
+						mSwitchNightONOFF.setChecked(false);
+						mSwitchReadONOFF.setChecked(false);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+		mSwitchReadONOFF.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				try {
+					if (mSwitchReadONOFF.isChecked()) {
+						mBTSocket.getOutputStream().write(ON_READ_CODE.getBytes());
+						mSwitchNightONOFF.setChecked(false);
+					}
+					else {
+						mBTSocket.getOutputStream().write(OFF_READ_CODE.getBytes());
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+		mSwitchNightONOFF.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				try {
+					if (mSwitchNightONOFF.isChecked()) {
+						mBTSocket.getOutputStream().write(ON_NIGHT_CODE.getBytes());
+						mSwitchReadONOFF.setChecked(false);
+					}
+					else {
+						mBTSocket.getOutputStream().write(OFF_NIGHT_CODE.getBytes());
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

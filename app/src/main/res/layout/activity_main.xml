@@ -6,16 +6,13 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     tools:context=".MainActivity"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="@drawable/sfondo">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="90dp" />
 
         <ToggleButton
             android:layout_width="wrap_content"
@@ -28,26 +25,27 @@
             android:textOn=""
             android:textOff="" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="39dp"
-            android:layout_gravity="center_horizontal" />
-
-        <SeekBar
-            android:layout_width="match_parent"
+        <ToggleButton
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/seekBar" />
+            android:text="New ToggleButton"
+            android:id="@+id/toggleNight"
+            android:checked="false"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/ic_togglenight"
+            android:textOn=""
+            android:textOff="" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="76dp"
-            android:layout_gravity="center_horizontal" />
-
-        <Chronometer
-            android:layout_width="73dp"
-            android:layout_height="89dp"
-            android:id="@+id/chronometer"
-            android:layout_gravity="center_horizontal" />
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New ToggleButton"
+            android:id="@+id/toggleRead"
+            android:checked="false"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/ic_toggleread"
+            android:textOn=""
+            android:textOff=""  />
 
     </LinearLayout>
 
