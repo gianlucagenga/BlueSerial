@@ -8,9 +8,13 @@ package com.blueserial;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import com.blueserial.R;
+import com.blueserial.CircularSeekBar;
+import com.blueserial.CircularSeekBar.OnCircularSeekBarChangeListener;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -23,7 +27,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ToggleButton;
 import android.widget.Toast;
 
@@ -36,19 +39,14 @@ public class MainActivity extends Activity {
 	private ReadInput mReadThread = null;
 
 	private boolean mIsUserInitiatedDisconnect = false;
-
-	private static final String ON_CODE = "a";
-	private static final String OFF_CODE = "b";
-	private static final String ON_NIGHT_CODE = "c";
-	private static final String OFF_NIGHT_CODE = "d";
-	private static final String ON_READ_CODE = "e";
-	private static final String OFF_READ_CODE = "f";
+	private static final Map<String,String> levels = new HashMap<String, String>();
 
 	// All controls here
 	//private Button mBtnSend;
 	private ToggleButton mSwitchONOFF;
 	private ToggleButton mSwitchReadONOFF;
 	private ToggleButton mSwitchNightONOFF;
+	private CircularSeekBar seekbar;
 
 	private boolean mIsBluetoothConnected = false;
 
@@ -70,45 +68,59 @@ public class MainActivity extends Activity {
 
 		Log.d(TAG, "Ready");
 
-		//mBtnSend = (Button) findViewById(R.id.btnSend);
-		//mEditSend = (EditText) findViewById(R.id.editSend);
 		mSwitchONOFF = (ToggleButton) findViewById(R.id.switchONOFF);
 		mSwitchReadONOFF = (ToggleButton) findViewById(R.id.toggleRead);
 		mSwitchNightONOFF = (ToggleButton) findViewById(R.id.toggleNight);
+		seekbar = (CircularSeekBar) findViewById(R.id.progressLight);
 
 		mSwitchNightONOFF.setEnabled(false);
 		mSwitchReadONOFF.setEnabled(false);
 		mSwitchNightONOFF.setChecked(false);
 		mSwitchReadONOFF.setChecked(false);
-
-/*
-		mBtnSend.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				try {
-					mBTSocket.getOutputStream().write(mEditSend.getText().toString().getBytes());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});*/
+		seekbar.setClickable(false);
+		seekbar.setProgress(0);
+		levels.put("0", "a");
+		levels.put("5", "b");
+		levels.put("10", "c");
+		levels.put("15", "d");
+		levels.put("20", "e");
+		levels.put("25", "f");
+		levels.put("30", "g");
+		levels.put("35", "h");
+		levels.put("40", "i");
+		levels.put("45", "j");
+		levels.put("50", "k");
+		levels.put("55", "l");
+		levels.put("60", "m");
+		levels.put("65", "n");
+		levels.put("70", "o");
+		levels.put("75", "p");
+		levels.put("80", "q");
+		levels.put("85", "r");
+		levels.put("90", "s");
+		levels.put("95", "t");
+		levels.put("100", "u");
 
 		mSwitchONOFF.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				try {
 					if (mSwitchONOFF.isChecked()) {
-						mBTSocket.getOutputStream().write(ON_CODE.getBytes());
+						mBTSocket.getOutputStream().write(levels.get("50").getBytes());
 						mSwitchNightONOFF.setEnabled(true);
 						mSwitchReadONOFF.setEnabled(true);
+						seekbar.setProgress(50);
 					}
 					else {
-						mBTSocket.getOutputStream().write(OFF_CODE.getBytes());
+						mBTSocket.getOutputStream().write(levels.get("0").getBytes());
 						mSwitchNightONOFF.setEnabled(false);
 						mSwitchReadONOFF.setEnabled(false);
 						mSwitchNightONOFF.setChecked(false);
 						mSwitchReadONOFF.setChecked(false);
+						seekbar.setEnabled(false);
+						seekbar.setClickable(false);
+						seekbar.setSelected(false);
+						seekbar.setProgress(0);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -121,11 +133,12 @@ public class MainActivity extends Activity {
 			public void onClick(View arg0) {
 				try {
 					if (mSwitchReadONOFF.isChecked()) {
-						mBTSocket.getOutputStream().write(ON_READ_CODE.getBytes());
+						mBTSocket.getOutputStream().write(levels.get("95").getBytes());
 						mSwitchNightONOFF.setChecked(false);
+						seekbar.setProgress(95);
 					}
 					else {
-						mBTSocket.getOutputStream().write(OFF_READ_CODE.getBytes());
+					//	mBTSocket.getOutputStream().write(OFF_READ_CODE.getBytes());
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -138,15 +151,37 @@ public class MainActivity extends Activity {
 			public void onClick(View arg0) {
 				try {
 					if (mSwitchNightONOFF.isChecked()) {
-						mBTSocket.getOutputStream().write(ON_NIGHT_CODE.getBytes());
+						mBTSocket.getOutputStream().write(levels.get("5").getBytes());
 						mSwitchReadONOFF.setChecked(false);
+						seekbar.setProgress(5);
 					}
 					else {
-						mBTSocket.getOutputStream().write(OFF_NIGHT_CODE.getBytes());
+					//	mBTSocket.getOutputStream().write(OFF_NIGHT_CODE.getBytes());
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}
+		});
+
+		seekbar.setOnSeekBarChangeListener(new OnCircularSeekBarChangeListener() {
+			@Override
+			public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
+				try {
+					mBTSocket.getOutputStream().write(levels.get((progress/5)*5 + "").getBytes());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void onStopTrackingTouch(CircularSeekBar seekBar) {
+
+			}
+
+			@Override
+			public void onStartTrackingTouch(CircularSeekBar seekBar) {
+
 			}
 		});
 	}
@@ -326,5 +361,6 @@ public class MainActivity extends Activity {
 		}
 
 	}
-
 }
+
+
