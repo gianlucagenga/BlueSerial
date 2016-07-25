@@ -18,7 +18,7 @@
         <com.blueserial.CircularSeekBar
             android:id="@+id/progressLight"
             android:layout_width="339dp"
-            android:layout_height="339dp"
+            android:layout_height="272dp"
             android:layout_gravity="center_horizontal"
             app:start_angle="270"
             app:end_angle="270"
@@ -37,7 +37,8 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:weightSum="1">
 
             <ToggleButton
                 android:layout_width="wrap_content"
@@ -45,7 +46,6 @@
                 android:text="Lamp"
                 android:id="@+id/switchONOFF"
                 android:checked="false"
-                android:layout_gravity="center_horizontal"
                 android:background="@drawable/ic_toggle"
                 android:textOn=""
                 android:textOff="" />
@@ -56,10 +56,20 @@
                 android:text="New ToggleButton"
                 android:id="@+id/toggleNight"
                 android:checked="false"
-                android:layout_gravity="center_horizontal"
                 android:background="@drawable/ic_togglenight"
                 android:textOn=""
                 android:textOff="" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"></FrameLayout>
 
             <ToggleButton
                 android:layout_width="wrap_content"
@@ -67,12 +77,17 @@
                 android:text="New ToggleButton"
                 android:id="@+id/toggleRead"
                 android:checked="false"
-                android:layout_gravity="center_horizontal"
                 android:background="@drawable/ic_toggleread"
                 android:textOn=""
                 android:textOff=""  />
+
         </LinearLayout>
 
     </TableLayout>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"></TableRow>
 
 </LinearLayout> <!-- </RelativeLayout> -->

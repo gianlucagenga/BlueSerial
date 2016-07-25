@@ -18,7 +18,7 @@
         <com.blueserial.CircularSeekBar
             android:id="@+id/progressLight"
             android:layout_width="339dp"
-            android:layout_height="339dp"
+            android:layout_height="272dp"
             android:layout_gravity="center_horizontal"
             app:start_angle="270"
             app:end_angle="270"
@@ -34,14 +34,16 @@
             app:pointer_halo_color="#88CD853F"
             android:indeterminate="false" />
 
-        <Space
-            android:layout_width="20px"
-            android:layout_height="32dp" />
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.44" />
 
             <ToggleButton
                 android:layout_width="wrap_content"
@@ -54,6 +56,11 @@
                 android:textOn=""
                 android:textOff="" />
 
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.23" />
+
             <ToggleButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,6 +72,18 @@
                 android:textOn=""
                 android:textOff="" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.02" />
+
             <ToggleButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,8 +94,18 @@
                 android:background="@drawable/ic_toggleread"
                 android:textOn=""
                 android:textOff=""  />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.02" />
         </LinearLayout>
 
     </TableLayout>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"></TableRow>
 
 </LinearLayout> <!-- </RelativeLayout> -->
