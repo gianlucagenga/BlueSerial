@@ -16,6 +16,7 @@ import com.blueserial.R;
 import com.blueserial.CircularSeekBar;
 import com.blueserial.CircularSeekBar.OnCircularSeekBarChangeListener;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -23,6 +24,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -102,6 +104,7 @@ public class MainActivity extends Activity {
 		levels.put("100", "u");
 
 		mSwitchONOFF.setOnClickListener(new OnClickListener() {
+			@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 			@Override
 			public void onClick(View arg0) {
 				try {
@@ -110,6 +113,7 @@ public class MainActivity extends Activity {
 						mSwitchNightONOFF.setEnabled(true);
 						mSwitchReadONOFF.setEnabled(true);
 						seekbar.setProgress(50);
+						seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer050) );
 					}
 					else {
 						mBTSocket.getOutputStream().write(levels.get("0").getBytes());
@@ -121,14 +125,17 @@ public class MainActivity extends Activity {
 						seekbar.setClickable(false);
 						seekbar.setSelected(false);
 						seekbar.setProgress(0);
+						seekbar.setBackground(null);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
+					onBackPressed();
 				}
 			}
 		});
 
 		mSwitchReadONOFF.setOnClickListener(new OnClickListener() {
+			@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 			@Override
 			public void onClick(View arg0) {
 				try {
@@ -136,17 +143,20 @@ public class MainActivity extends Activity {
 						mBTSocket.getOutputStream().write(levels.get("95").getBytes());
 						mSwitchNightONOFF.setChecked(false);
 						seekbar.setProgress(95);
+						seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer095) );
 					}
 					else {
 					//	mBTSocket.getOutputStream().write(OFF_READ_CODE.getBytes());
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
+					onBackPressed();
 				}
 			}
 		});
 
 		mSwitchNightONOFF.setOnClickListener(new OnClickListener() {
+			@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 			@Override
 			public void onClick(View arg0) {
 				try {
@@ -154,23 +164,60 @@ public class MainActivity extends Activity {
 						mBTSocket.getOutputStream().write(levels.get("5").getBytes());
 						mSwitchReadONOFF.setChecked(false);
 						seekbar.setProgress(5);
+						seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer005) );
 					}
 					else {
 					//	mBTSocket.getOutputStream().write(OFF_NIGHT_CODE.getBytes());
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
+					onBackPressed();
 				}
 			}
 		});
 
 		seekbar.setOnSeekBarChangeListener(new OnCircularSeekBarChangeListener() {
+			@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 			@Override
 			public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
 				try {
-					mBTSocket.getOutputStream().write(levels.get((progress/5)*5 + "").getBytes());
+					if (!mSwitchONOFF.isChecked()) {
+						seekbar.setProgress(0);
+						return;
+					}
+
+					if (progress % 5 == 0 && levels.containsKey(progress+"")) {
+						mBTSocket.getOutputStream().write(levels.get(progress + "").getBytes());
+						System.out.println(levels.get(progress + "") + " - " + progress);
+					}
+					switch (progress) {
+						case   0 : seekbar.setBackground( null ); break;
+						case   5 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer005) ); break;
+						case  10 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer010) ); break;
+						case  15 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer015) ); break;
+						case  20 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer020) ); break;
+						case  25 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer025) ); break;
+						case  30 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer030) ); break;
+						case  35 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer035) ); break;
+						case  40 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer040) ); break;
+						case  45 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer045) ); break;
+						case  50 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer050) ); break;
+						case  55 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer055) ); break;
+						case  60 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer060) ); break;
+						case  65 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer065) ); break;
+						case  70 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer070) ); break;
+						case  75 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer075) ); break;
+						case  80 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer080) ); break;
+						case  85 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer085) ); break;
+						case  90 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer090) ); break;
+						case  95 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer095) ); break;
+						case 100 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer100) ); break;
+						default:
+							break;
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
+					onBackPressed();
 				}
 			}
 
