@@ -56,6 +56,8 @@ public class MainActivity extends Activity {
 
 	private ProgressDialog progressDialog;
 
+	private int previousDimmerValue;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -81,6 +83,8 @@ public class MainActivity extends Activity {
 		mSwitchReadONOFF.setChecked(false);
 		seekbar.setClickable(false);
 		seekbar.setProgress(0);
+		previousDimmerValue = 0;
+
 		levels.put("0", "a");
 		levels.put("5", "b");
 		levels.put("10", "c");
@@ -109,11 +113,12 @@ public class MainActivity extends Activity {
 			public void onClick(View arg0) {
 				try {
 					if (mSwitchONOFF.isChecked()) {
-						mBTSocket.getOutputStream().write(levels.get("50").getBytes());
+						mBTSocket.getOutputStream().write(levels.get("30").getBytes());
 						mSwitchNightONOFF.setEnabled(true);
 						mSwitchReadONOFF.setEnabled(true);
-						seekbar.setProgress(50);
-						seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer050) );
+						seekbar.setProgress(30);
+						previousDimmerValue = 30;
+						seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer030) );
 					}
 					else {
 						mBTSocket.getOutputStream().write(levels.get("0").getBytes());
@@ -125,6 +130,7 @@ public class MainActivity extends Activity {
 						seekbar.setClickable(false);
 						seekbar.setSelected(false);
 						seekbar.setProgress(0);
+						previousDimmerValue = 0;
 						seekbar.setBackground(null);
 					}
 				} catch (IOException e) {
@@ -143,6 +149,7 @@ public class MainActivity extends Activity {
 						mBTSocket.getOutputStream().write(levels.get("95").getBytes());
 						mSwitchNightONOFF.setChecked(false);
 						seekbar.setProgress(95);
+						previousDimmerValue = 95;
 						seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer095) );
 					}
 					else {
@@ -164,6 +171,7 @@ public class MainActivity extends Activity {
 						mBTSocket.getOutputStream().write(levels.get("5").getBytes());
 						mSwitchReadONOFF.setChecked(false);
 						seekbar.setProgress(5);
+						previousDimmerValue = 5;
 						seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer005) );
 					}
 					else {
@@ -183,14 +191,28 @@ public class MainActivity extends Activity {
 				try {
 					if (!mSwitchONOFF.isChecked()) {
 						seekbar.setProgress(0);
+						previousDimmerValue = 0;
 						return;
 					}
 
-					if (progress % 5 == 0 && levels.containsKey(progress+"")) {
-						mBTSocket.getOutputStream().write(levels.get(progress + "").getBytes());
+					if (fromUser && (previousDimmerValue == 100 && progress < 50 || (previousDimmerValue == 0 && progress > 50))) {
+						//do nothing
+						seekbar.setProgress(previousDimmerValue);
+						return;
+					}
+
+
+					if (/*progress % 5 == 0 &&*/ levels.containsKey(getMinimumIntervalForNumber(progress)+"")) {
+						mBTSocket.getOutputStream().write(levels.get(getMinimumIntervalForNumber(progress) + "").getBytes());
 						System.out.println(levels.get(progress + "") + " - " + progress);
 					}
-					switch (progress) {
+					//else {
+					//	seekbar.setProgress(previousDimmerValue);
+					//	return;
+					//}
+
+					previousDimmerValue = progress;
+					switch (getMinimumIntervalForNumber(progress)) {
 						case   0 : seekbar.setBackground( null ); break;
 						case   5 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer005) ); break;
 						case  10 : seekbar.setBackground( getResources().getDrawable(R.drawable.dimmer010) ); break;
@@ -407,6 +429,11 @@ public class MainActivity extends Activity {
 			progressDialog.dismiss();
 		}
 
+	}
+
+	private Integer getMinimumIntervalForNumber(double progress) {
+		Integer factor = Integer.parseInt(Math.round(progress / 5.0)+"");
+		return factor * 5;
 	}
 }
 
