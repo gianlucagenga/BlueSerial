@@ -15,14 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Space
-            android:layout_width="20px"
-            android:layout_height="22dp" />
-
         <com.blueserial.CircularSeekBar
             android:id="@+id/progressLight"
-            android:layout_width="307dp"
-            android:layout_height="310dp"
+            android:layout_width="267dp"
+            android:layout_height="264dp"
             android:layout_gravity="center_horizontal"
             app:start_angle="270"
             app:end_angle="270"
@@ -36,90 +32,89 @@
             app:pointer_alpha_ontouch="100"
             app:pointer_color="#CD853F"
             app:pointer_halo_color="#88CD853F"
+            app:circle_stroke_width="7dp"
             android:indeterminate="false" />
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:weightSum="1">
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.27" />
-
-            <ToggleButton
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lamp"
-                android:id="@+id/switchONOFF"
-                android:checked="false"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/ic_toggle"
-                android:textOn=""
-                android:textOff=""
-                android:layout_weight="0.15" />
+                android:weightSum="1">
 
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.23" />
+                <Space
+                    android:layout_width="17dp"
+                    android:layout_height="match_parent" />
 
-            <ToggleButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New ToggleButton"
-                android:id="@+id/toggleNight"
-                android:checked="false"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/ic_togglenight"
-                android:textOn=""
-                android:textOff=""
-                android:layout_weight="0.15" />
+                <ToggleButton
+                    android:layout_width="138dp"
+                    android:layout_height="140dp"
+                    android:text="Lamp"
+                    android:id="@+id/switchONOFF"
+                    android:checked="false"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/ic_toggle"
+                    android:textOn=""
+                    android:textOff="" />
 
-        </LinearLayout>
+                <Space
+                    android:layout_width="21dp"
+                    android:layout_height="match_parent" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:weightSum="1">
+                <ToggleButton
+                    android:layout_width="138dp"
+                    android:layout_height="140dp"
+                    android:text="New ToggleButton"
+                    android:id="@+id/toggleNight"
+                    android:checked="false"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/ic_togglenight"
+                    android:textOn=""
+                    android:textOff="" />
 
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.12" />
+            </LinearLayout>
 
-            <ToggleButton
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New ToggleButton"
-                android:id="@+id/toggleRead"
-                android:checked="false"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/ic_toggleread"
-                android:textOn=""
-                android:textOff=""
-                android:layout_weight="0.15" />
+                android:weightSum="1">
 
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.23" />
+                <Space
+                    android:layout_width="17dp"
+                    android:layout_height="match_parent" />
 
-            <ToggleButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New ToggleButton"
-                android:id="@+id/toggleTimer"
-                android:checked="false"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/ic_toggletimer"
-                android:textOn=""
-                android:textOff=""
-                android:layout_weight="0.15"/>
+                <ToggleButton
+                    android:layout_width="138dp"
+                    android:layout_height="140dp"
+                    android:text="New ToggleButton"
+                    android:id="@+id/toggleRead"
+                    android:checked="false"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/ic_toggleread"
+                    android:textOn=""
+                    android:textOff="" />
 
+                <Space
+                    android:layout_width="21dp"
+                    android:layout_height="match_parent" />
+
+                <ToggleButton
+                    android:layout_width="138dp"
+                    android:layout_height="140dp"
+                    android:text="New ToggleButton"
+                    android:id="@+id/toggleTimer"
+                    android:checked="false"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/ic_toggletimer"
+                    android:textOn=""
+                    android:textOff="" />
+
+            </LinearLayout>
         </LinearLayout>
 
     </TableLayout>
